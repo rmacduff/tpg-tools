@@ -1,11 +1,11 @@
 package hackertext
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"io"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -75,13 +75,17 @@ func NewText(opts ...option) (hackertext, error) {
 	return ht, nil
 }
 
-func (ht hackertext) Print() {
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(ht.input)
-	for _, c := range buf.Bytes() {
+func (ht hackertext) Print() error {
+	buf := new(strings.Builder)
+	_, err := io.Copy(buf, ht.input)
+	if err != nil {
+		return errors.New("could not read from input")
+	}
+	for _, c := range buf.String() {
 		fmt.Fprintf(ht.output, "%c", c)
 		time.Sleep(time.Duration(ht.delay) * time.Millisecond)
 	}
+	return nil
 }
 
 func Print() {

@@ -18,7 +18,10 @@ func TestPrintStdin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	ht.Print()
+	err = ht.Print()
+	if err != nil {
+		t.Fatal(err)
+	}
 	want := "Hello, hackers!"
 	got := fakeTerminal.String()
 	if want != got {
@@ -38,7 +41,10 @@ func TestPrintFile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	ht.Print()
+	err = ht.Print()
+	if err != nil {
+		t.Fatal(err)
+	}
 	want := "this is a test\n"
 	got := fakeTerminal.String()
 	if want != got {
