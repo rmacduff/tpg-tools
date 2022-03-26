@@ -226,7 +226,6 @@ type MockWriter struct {
 func (mw *MockWriter) Write(buf []byte) (int, error) {
 	if mw.FailedWriteCount < mw.MaxFailedWrites {
 		mw.FailedWriteCount++
-		// fmt.Fprintf(os.Stdout, "FailedWriteCount: %d\n", mw.FailedWriteCount)
 		return 0, errors.New("simulated failed write")
 	}
 	return mw.writer.Write(buf)

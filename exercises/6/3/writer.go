@@ -118,12 +118,6 @@ func (w *writer) WriteZeros(output io.Writer, numZeros int) error {
 	return w.WriteZerosWithConfig()
 }
 func (w writer) WriteZerosWithConfig() error {
-	// f, err := os.OpenFile(w.outFile, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0600)
-	// if err != nil {
-	// 	return err
-	// }
-	// defer f.Close()
-
 	var failedWrites int
 	numChunks := int(math.Ceil(float64(w.numZeros) / float64(w.buffSize)))
 	var numWritten int
@@ -134,12 +128,10 @@ func (w writer) WriteZerosWithConfig() error {
 		if w.numZeros-numWritten < w.buffSize {
 			zeroArray = make([]byte, w.numZeros-numWritten)
 		}
-		// fmt.Fprintf(os.Stdout, "retryCount: %d\n", w.retryCount)
 		for failedWrites < w.retryCount {
 			_, err := w.output.Write(zeroArray)
 			if err != nil {
 				failedWrites++
-				fmt.Fprintf(os.Stdout, "failedWrites: %d\n", failedWrites)
 			} else {
 				break
 			}
